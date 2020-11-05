@@ -3,7 +3,7 @@
 
 <!-- CONSTANTS -->
 <?php
-$VER = '1';
+$VER = '1.1';
 ?>
 
 <head>
