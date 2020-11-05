@@ -3,9 +3,12 @@ function task_block($screenshot, $question, $answer_value, $answer_description, 
    global $php_root;
 
    $answer_description = trim($answer_description);
-   $answer_free = $answer_value !== '' ? '' : 'task__answer_free';
-   if ($answer_value === '') {
+   $answer_free = ($answer_value !== '' || $answer_description !== '') ? '' : 'task__answer_free';
+   if ($answer_free) {
       $answer_value = 'Нет ответа';
+      $answer_description = '<center>------------</center>';
+   } else if ($answer_value === '') {
+      $answer_value = $answer_description;
       $answer_description = '<center>------------</center>';
    }
    $res = <<<HTML

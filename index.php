@@ -11,8 +11,8 @@ require_once $php_root . '/head.php';
 
 <header>
   <h1>
-    Бомбим программирование <br>
-    <small><em>by <a href="/"><span style="color: blue;">feodoritiy corp.</span></a></em></small>
+    Бомбим программирование, PYCPP <br>
+    <small><em><a href="/"><span style="color: blue;">frity corp.</span></a></em></small>
   </h1>
 </header>
 
