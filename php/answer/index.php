@@ -39,6 +39,7 @@ require_once './../head.php';
             $task['task_question'],
             $task_answer ? $task_answer['value'] : '',
             $task_answer ? $task_answer['description'] : '',
+            $task_answer ? $task_answer['likes'] : '',
             $task['task_modification_date'],
             $task['id_task'],
             $_GET['from'],

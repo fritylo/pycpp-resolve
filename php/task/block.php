@@ -1,5 +1,5 @@
 <?php
-function task_block($screenshot, $question, $answer_value, $answer_description, $modification_date, $id, $test_id, $show_response_button = true) {
+function task_block($screenshot, $question, $answer_value, $answer_description, $likes, $modification_date, $id, $test_id, $show_response_button = true) {
    global $php_root;
 
    $answer_description = trim($answer_description);
@@ -26,7 +26,7 @@ function task_block($screenshot, $question, $answer_value, $answer_description, 
             <div class="w100 task__answer-value">
                   {$answer_value}
             </div>
-            <div class="w100 task__answer-description">{$answer_description}</div>
+            <div class="w100 task__answer-description">{$answer_description}<div class="task__answer-likes">{$likes}</div></div>
          </div>
          <button class="task__save-button dn" 
             type="submit">Сохранить</button>

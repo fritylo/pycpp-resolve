@@ -220,6 +220,29 @@ header {
   text-align: left;
   padding: 0.5em;
   padding-top: 0;
+  position: relative;
+}
+
+.task__answer-likes {
+  padding: 0.25em 0.5em;
+  color: green;
+  border: 1px solid #00ff0050;
+  border-radius: 1em;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+}
+
+.task__answer-likes::after {
+  content: '';
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  background: url(./images/heart.svg) center/contain no-repeat;
+  fill: green;
+  margin-left: 0.25em;
 }
 
 /*.task__answer:placeholder-shown {

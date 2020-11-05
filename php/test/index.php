@@ -43,24 +43,34 @@ require_once './../head.php';
          </button>
 
          <template class="task-template">
-            <?php echo task_block('', '', '', '', '', '$id', $_GET['id']); ?>
+            <?php echo task_block('', '', '', '', '', '', '$id', $_GET['id']); ?>
          </template>
       </center>
 
       <div class="tasks-block row wrap jcc g1">
-         <?php query("SELECT * FROM pycpp_task WHERE task_id_test={$test['id']} ORDER BY task_modification_date DESC;", function ($row) {
-            $id_task = $row['id_task'];
-            $task_answer = task_get_best_answer($id_task);
+         <?php 
+         $tasks = task("SELECT * FROM pycpp_task WHERE task_id_test={$test['id']} ORDER BY task_modification_date DESC;")->fetch_all(MYSQLI_ASSOC);
+         $rating = [];
+         foreach ($tasks as $task) {
+            $task_answer = task_get_best_answer($task['id_task']);
+            array_push($rating, [$task, $task_answer]);
+         }
+         usort($rating, function ($a, $b) { return $a[1]['likes'] - $b[1]['likes']; });
+         
+         foreach ($rating as $i => [$task, $task_answer]) {
+            $id_task = $task['id_task'];
             echo task_block(
-               $row['task_screenshot'],
-               $row['task_question'],
+               $task['task_screenshot'],
+               $task['task_question'],
                $task_answer ? $task_answer['value'] : '',
                $task_answer ? $task_answer['description'] : '',
-               $row['task_modification_date'],
+               $task_answer ? $task_answer['likes'] : '',
+               $task['task_modification_date'],
                $id_task,
                $_GET['id']
             );
-         }); ?>
+         }
+         ?>
       </div>
    </main>
 

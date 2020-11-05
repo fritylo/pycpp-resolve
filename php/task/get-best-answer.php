@@ -17,7 +17,8 @@ function task_get_best_answer($id_task) {
       )->fetch_array()[0];
       return [
          'value' => $answer_value,
-         'description' => $answer_description
+         'description' => $answer_description,
+         'likes' => $max_likes,
       ];
    }
 }
