@@ -1,3 +1,4 @@
+let searchTimeout;
 $('.search').keyup(action('keyup: search update', e => {
    let searchQuery = e.target.value,
       searchRegex = new RegExp(searchQuery
@@ -7,13 +8,18 @@ $('.search').keyup(action('keyup: search update', e => {
 
    $('.task').each(function () {
       const task = this, $task = $(task);
-      let taskFieds = [
+      let taskFields = [
          $task.find('.task__answer').text(),
-         $task.find('.task__question-textarea').val(),
+         $task.find('.task__question-textarea').text(),
       ];
-      if (!searchQuery.trim() || taskFieds.some(
+      if (!searchQuery.trim() || taskFields.some(
          field => searchRegex.test(field)
       )) $task.removeClass('dn');
       else $task.addClass('dn');
    });
+
+   clearTimeout(searchTimeout);
+   searchTimeout = setTimeout(() => {
+      $TASK.Sblock.masonry();
+   }, 200);
 }));

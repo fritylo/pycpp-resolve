@@ -11,8 +11,9 @@ $('.new-task-button').click(action('click: new task button', e => {
          $task.find('.task__save-button').click(action('click: save task button'));
          $task.find('.task__remove-button').click(action('click: remove task button'));
          $task.find('.task__answer-button').click(action('click: answer task button'));
-         $task.find('textarea').on('keyup change', action('keyup: task change'));
+         $task.find('.textarea').on('keyup change', action('keyup: task change'));
 
          $TASK.Sblock.prepend($task);
+         $TASK.Sblock.masonry('prepended', $task).masonry('layout');
       });
 }));

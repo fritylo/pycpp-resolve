@@ -2,6 +2,8 @@ const $ANSWER = {
    removeButton: $('.answer__remove-button'),
    template: $('.answer-template'),
    likeButton: $('.answer__like-button'),
+   new: $('.answer_edit'),
+   variants: $('.answer__variant'),
    Sblock: $('.answers-block'),
    ajax: {
       new: `${PHP_ROOT}/ajax/answer/new.php`,

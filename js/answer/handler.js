@@ -28,3 +28,18 @@ when('click: like answer button', e => {
          URL.set('liked', data);
       });
 });
+
+when('click: variant answer label', e => {
+   let $editor = $(e.target).parents('.answer_edit');
+   let $letters = $editor.find('[name="letters"]');
+   let $variants = $editor.find('.answer__variant input');
+   let alphabet = ['A','B','C','D','E','F','G','H','I','J','K','L'];
+
+   let value = [];
+   $variants.toArray().forEach((v, i) => {
+      if (v.checked)
+         value.push(alphabet[i]);
+   });
+
+   $letters.val(value.join(','));
+});

@@ -1,7 +1,9 @@
 const $TASK = {
-   textarea: $('.task textarea'),
+   textarea: $('.task .textarea'),
    removeButton: $('.task__remove-button'),
    answerButton: $('.task__answer-button'),
+   form: $('.task'),
+   toggle: $('.task__answer-toggle'),
    template: $('.task-template'),
    Sblock: $('.tasks-block'),
    ajax: {
@@ -12,7 +14,13 @@ const $TASK = {
 };
 
 $TASK.textarea.each(function () {
-   this.startValue = this.value;
+   this.startValue = this.textContent.length;
+});
+
+$TASK.Sblock.masonry({
+   isFitWidth: true,
+   itemSelector: '.task',
+   columnWidth: 350,
 });
 
 window.$TASK = $TASK;

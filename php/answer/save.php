@@ -3,30 +3,39 @@ require_once './../db.php';
 require_once './../api.php';
 
 php_root('./..');
-include $php_root . '/task/block.php';
-include $php_root . '/task/get-best-answer.php';
-include $php_root . '/answer/block.php';
 
 //$_POST['id'] - answer id
-//$_POST['value'] - answer value
+
+//$_POST['value'] - answer value (raw string)
+//      OR
+//$_POST['variant'] - correct checkbox IDs array
+//$_POST['letters'] - correct checkbox letters
+
 //$_POST['description'] - answer description
 //$_POST['task-id'] - task id
+$value = '';
+if (array_key_exists('value', $_POST) && !empty($_POST['value'])) {
+   $value = $db->real_escape_string($_POST['value']);
+} else if (array_key_exists('variant', $_POST) && !empty($_POST['variant'])) {
+   $value = implode(',', $_POST['variant']);
+}
 
-$value = $db->real_escape_string($_POST['value']);
-$description = $db->real_escape_string($_POST['description']);
+$description = $db->escape_string($_POST['description']);
 
-//echo 'value: '.$value;
-//echo 'description: '.$description;
-//echo 'id: '.$_POST['id'];
-//echo 'task-id: '.$_POST['task-id'];
+$res = task($SQL_new_answer =
+   "INSERT INTO pycpp_answer (
+    `id_answer`, 
+    `answer_value`, 
+    `answer_description`, 
+    `answer_likes`,
+    `answer_id_task` ) 
+    VALUES (
+      NULL, 
+      '{$_POST['letters']}',
+      '$description', 
+      0,
+      '{$_POST['task-id']}'
+    );");
 
-$res = task($SQL_update_task =
-   "UPDATE 
-      pycpp_answer 
-   SET 
-      answer_value = '$value',
-      answer_description = '$description'
-   WHERE id_answer = {$_POST['id']};");
-
-if (!$res) echo "Возникла ошибка во время выполнения запроса: $SQL_update_task";
+if (!$res) echo "Возникла ошибка во время выполнения запроса: $SQL_new_answer";
 else header("location: ./?id={$_POST['task-id']}&from={$_POST['from']}");

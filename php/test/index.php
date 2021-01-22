@@ -4,8 +4,7 @@ require_once './../db.php';
 require_once './../api.php';
 
 php_root('./..');
-include $php_root . '/task/block.php';
-include $php_root . '/task/get-best-answer.php';
+include $php_root . '/task/Task.php';
 
 $test = [
    'id' => $_GET['id'],
@@ -19,56 +18,52 @@ query("SELECT * FROM pycpp_test WHERE id_test='{$_GET['id']}';", function ($row)
 });
 
 $page_title = 'PYCPP: ' . $test['name'];
-$root = './../../';
-require_once './../head.php';
+require_once $php_root . '/head.php';
 ?>
 
 <body>
-   
+
    <header class="row jcsb max500_col max500_aic">
       <div class="col max500_aic">
          <strong><?= $test['name'] ?></strong>
          <small><?= $test['creation_date'] ?></small>
       </div>
-      <a class="mto5 max500_mt0 abs back-button" href="./../../">Назад</a>
-      <div class="row">
+      <div class="search-wrapper row abs">
          <input class="search" type="text" placeholder="Что искать...">
       </div>
+      <a class="mto5 max500_mt0 back-button" href="./../../">Назад</a>
    </header>
 
    <main>
-      <center class="mto5 mbo25">
+      <center class="mto5 mb1">
          <button class="new-task-button">
-            Добавить новый вопрос
+            Добавить вопрос
+         </button>
+
+         <button class="ext-add-help">
+            Не парить мозг и юзать расширение? Каво?
          </button>
 
          <template class="task-template">
-            <?php echo task_block('', '', '', '', '', '', '$id', $_GET['id']); ?>
+            <?php $task_tpl = new Task('$id', $_GET['id']); ?>
+            <?php echo $task_tpl->block(); ?>
          </template>
       </center>
 
-      <div class="tasks-block row wrap jcc g1">
-         <?php 
-         $tasks = task("SELECT * FROM pycpp_task WHERE task_id_test={$test['id']} ORDER BY task_modification_date DESC;")->fetch_all(MYSQLI_ASSOC);
+      <div class="tasks-block row wrap jcc mA g1">
+         <?php
+         $tasks = task("SELECT id_task FROM pycpp_task WHERE task_id_test={$test['id']} ORDER BY task_modification_date DESC;")->fetch_all(MYSQLI_ASSOC);
          $rating = [];
          foreach ($tasks as $task) {
-            $task_answer = task_get_best_answer($task['id_task']);
-            array_push($rating, [$task, $task_answer]);
+            $task = new Task($task['id_task'], $test['id']);
+            array_push($rating, $task);
          }
-         usort($rating, function ($a, $b) { return $a[1]['likes'] - $b[1]['likes']; });
-         
-         foreach ($rating as $i => [$task, $task_answer]) {
-            $id_task = $task['id_task'];
-            echo task_block(
-               $task['task_screenshot'],
-               $task['task_question'],
-               $task_answer ? $task_answer['value'] : '',
-               $task_answer ? $task_answer['description'] : '',
-               $task_answer ? $task_answer['likes'] : '',
-               $task['task_modification_date'],
-               $id_task,
-               $_GET['id']
-            );
+         usort($rating, function ($a, $b) {
+            return $a->best_answer['likes'] - $b->best_answer['likes'];
+         });
+
+         foreach ($rating as $task) {
+            echo $task->block();
          }
          ?>
       </div>
