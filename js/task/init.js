@@ -21,6 +21,7 @@ $TASK.Sblock.masonry({
    isFitWidth: true,
    itemSelector: '.task',
    columnWidth: 350,
+   transitionDuration: 0,
 });
 
 window.$TASK = $TASK;

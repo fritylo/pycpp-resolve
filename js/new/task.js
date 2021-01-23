@@ -14,6 +14,6 @@ $('.new-task-button').click(action('click: new task button', e => {
          $task.find('.textarea').on('keyup change', action('keyup: task change'));
 
          $TASK.Sblock.prepend($task);
-         $TASK.Sblock.masonry('prepended', $task).masonry('layout');
+         $TASK.Sblock.first().masonry('prepended', $task).masonry();
       });
 }));

@@ -7,7 +7,7 @@ class Task
    var string $question;
    var array $variants;
 
-   function __construct($id_task, $id_test)
+   function __construct($id_task, $id_test = null)
    {
       $this->id = $id_task;
       $this->test = $id_test;
@@ -86,7 +86,7 @@ class Task
       return $str;
    }
 
-   function block($show_response_button = true)
+   function block($show_response_button = true, $from_other_test = false)
    {
       global $php_root;
 
@@ -124,9 +124,9 @@ class Task
       $res = <<<HTML
       <form class="task col" action="{$php_root}/ajax/task/save.php" method="post">
          <div class="task__question">
-            <span class="textarea task__question-textarea w100 h100"
+            <div class="textarea task__question-textarea w100 h100"
                contenteditable
-               placeholder="Введите вопрос...">{$question}</span>
+               placeholder="Введите вопрос...">{$question}</div>
             <input  name="question" type="hidden" value="$question" />
          </div>
 HTML;
@@ -166,9 +166,18 @@ HTML;
                   {$modification_date}
                </small>
             </div>
+HTML;
+      if ($from_other_test)
+      $res .= <<<HTML
+            <small>Из теста <a href="./../test/?id={$from_other_test['id']}">{$from_other_test['name']}</a></small>
+HTML;
+      else
+      $res .= <<<HTML
             <small>
                <a class="task__remove-button cup">Удалить вопрос</a>
             </small>
+HTML;
+      $res .= <<<HTML
          </div>
          <input name="id" 
             type="hidden" value="{$id}">

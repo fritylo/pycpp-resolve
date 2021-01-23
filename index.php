@@ -16,8 +16,10 @@ require_once $php_root . '/head.php';
   </h1>
 </header>
 
+<a href="./php/room/">В комнату</a> <a href="./chrome-fti-progsolve.zip">Плагин</a>
+
 <main>
-  <?php query('SELECT * FROM pycpp_test;', function ($row) {
+  <?php query('SELECT * FROM pycpp_test ORDER BY test_priority DESC;', function ($row) {
     echo <<<HTML
       <div class="test mt1">
         <a href="./php/test?id={$row['id_test']}">
